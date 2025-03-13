@@ -1,0 +1,65 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  img {
+    width: 200px;
+    height: 250px;
+  }
+  .btn-primary {
+    background-color: #f4a261;
+    border-color: #f4a261;
+  }
+  .btn-primary:hover {
+    background-color: #8d6e63;
+    border-color: #8d6e63;
+    transition: 0.5s;
+  }
+</style>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Home</h1>
+  <a href="{{ url_for('main.book_form') }}" class="btn btn-primary mb-3"
+    >Add Book</a
+  >
+</div>
+
+<div class="container mt-5">
+  {% if books %}
+  <div class="row">
+    {% for book in books %}
+    <div class="col-md-3 mb-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="{{ book.image_url }}"
+          class="card-img-top"
+          alt="{{ book.name }}" />
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ book.name[:20] }}{% if book.name|length > 20 %}...{% endif %}
+          </h5>
+          <p class="card-text">
+            <strong>Author:</strong> {{ book.author.name }}
+          </p>
+          <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+          <p class="card-text">
+            <strong>Age Group:</strong> {{ book.appropriate }}
+          </p>
+          <p>
+            {{ book.description [:50] }}{% if book.description|length > 100
+            %}...{% endif %}
+          </p>
+          <a
+            href="{{ url_for('main.book_details', book_id=book.id) }}"
+            class="btn btn-primary"
+            >Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center">No books available. Add some!</p>
+  {% endif %}
+</div>
+
+{% endblock %}

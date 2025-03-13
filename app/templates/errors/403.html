@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container mt-5">
+  <h1>403 - Forbidden</h1>
+  <p>You do not have permission to access this page.</p>
+  <p>Please contact the administrator if you believe this is an error.</p>
+  <a href="{{ url_for('main.book_page') }}" class="btn btn-primary">Go Home</a>
+</div>
+
+{% endblock %}

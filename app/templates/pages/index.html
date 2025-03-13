@@ -1,0 +1,146 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  img {
+    width: 200px;
+    height: 250px;
+  }
+  .btn-primary {
+    background-color: #f4a261;
+    border-color: #f4a261;
+  }
+  .btn-primary:hover {
+    background-color: #8d6e63;
+    border-color: #8d6e63;
+    transition: 0.5s;
+  }
+  .dropdown-toggle::after {
+    display: none; /* Hide the default dropdown arrow */
+  }
+</style>
+<div
+  id="carouselExampleControls "
+  class="carousel slide mt-5"
+  data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        src="{{url_for ('static', filename='images/1.webp') }}"
+        class="d-block w-100"
+        style="height: 500px"
+        alt="..." />
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{{url_for ('static', filename='images/2.webp') }}"
+        class="d-block w-100"
+        style="height: 500px"
+        alt="..." />
+    </div>
+
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleControls"
+      data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleControls"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Home</h1>
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+    <a href="{{ url_for('main.book_form') }}" class="btn btn-primary mb-3"
+      >Add Book</a
+    >
+    {%endif%}
+  </div>
+  <div class="container mt-5">
+    {% if books %}
+    <div class="row">
+      {% for book in books %}
+      <div class="col-md-3 mb-4">
+        <div class="card" style="width: 18rem">
+          {% if current_user.is_authenticated and current_user.is_admin() %}
+          <!-- Dropdown Menu -->
+          <div class="dropdown position-absolute top-0 end-0 m-2">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton{{ book.id }}"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="fa-solid fa-caret-down"></i>
+            </button>
+            <ul
+              class="dropdown-menu"
+              aria-labelledby="dropdownMenuButton{{ book.id }}">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="{{ url_for('main.edit_book', book_id=book.id) }}">
+                  <i class="fas fa-edit"></i> Edit
+                </a>
+              </li>
+              <li>
+                <form
+                  action="{{ url_for('main.delete_book', book_id=book.id) }}"
+                  method="POST"
+                  style="display: inline">
+                  <button
+                    type="submit"
+                    class="dropdown-item text-danger"
+                    onclick="return confirm('Are you sure you want to delete this book?');">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+          <!-- Book Image -->
+          <img
+            src="{{ book.image_url }}"
+            class="card-img-top"
+            alt="{{ book.name }}" />
+
+          <!-- Book Details -->
+          <div class="card-body">
+            <h5 class="card-title">
+              {{ book.name[:20] }}{% if book.name|length > 20 %}...{% endif %}
+            </h5>
+            <p class="card-text">
+              <strong>Author:</strong> {{ book.author.name }}
+            </p>
+            <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+            <p class="card-text">
+              <strong>Age Group:</strong> {{ book.appropriate }}
+            </p>
+            <p>
+              {{ book.description[:50] }}{% if book.description|length > 50
+              %}...{% endif %}
+            </p>
+            <a
+              href="{{ url_for('main.book_details', book_id=book.id) }}"
+              class="btn btn-primary">
+              Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center">No books available. Add some!</p>
+    {% endif %}
+  </div>
+
+  {% endblock %}
+</div>

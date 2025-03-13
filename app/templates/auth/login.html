@@ -1,0 +1,43 @@
+{% extends 'base.html'%} {%block content%}
+<style>
+  .alert-dismissible {
+    padding-right: 2.5rem;
+    background-color: #f8d7da;
+    width: 75%;
+    margin: auto;
+  }
+  </style>
+<div class="container mt-5 shadow p-5 rounded-3 w-50 my-5">
+  <form method="POST" class="needs-validation" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.username.label(class="form-label") }} {{
+      form.username(class="form-control", placeholder="Enter username") }}
+    </div>
+    {% if form.username.errors %}
+
+    <div class="alert alert-danger" role="alert">
+        {% for error in form.username.errors %}
+            {{ error }}
+        {% endfor %}
+        
+    </div>
+
+    {%endif%}
+    <div class="mb-3">
+      {{ form.password.label(class="form-label") }} {{
+      form.password(class="form-control", placeholder="Enter password") }}
+    </div>
+    {% if form.password.errors  %}
+    <div class="alert alert-danger" role="alert">
+        {% for error in form.password.errors %}
+            {{ error }}
+        {% endfor %}
+    </div>
+    
+    {%endif%}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+  {%endblock%}
+</div>

@@ -1,0 +1,94 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  .form-control:invalid,
+  .form-select:invalid {
+    border-color: #dc3545;
+  }
+  .form-control:valid,
+  .form-select:valid {
+    border-color: #198754;
+  }
+</style>
+
+<div class="container mt-5 shadow p-5 rounded-3 w-50 my-5">
+  <h1 class="mb-4">{{ 'Edit Book' if is_edit else 'Add a New Book' }}</h1>
+
+  <form method="POST" class="needs-validation" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }} {{
+      form.name(class="form-control", placeholder="Enter book name",
+      required=True) }}
+      <div class="invalid-feedback">Please enter the book name.</div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.publish_date.label(class="form-label") }} {{
+      form.publish_date(class="form-control", required=True) }}
+      <div class="invalid-feedback">Please select the publish date.</div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.add_to_site_at.label(class="form-label") }} {{
+      form.add_to_site_at(class="form-control", required=True) }}
+      <div class="invalid-feedback">Please select the date added to site.</div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.author_id.label(class="form-label") }} {{
+      form.author_id(class="form-select", required=True) }}
+      <div class="invalid-feedback">Please select an author.</div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.price.label(class="form-label") }} {{
+      form.price(class="form-control", placeholder="Enter price", required=True)
+      }}
+      <div class="invalid-feedback">Please enter the price.</div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.appropriate.label(class="form-label") }} {{
+      form.appropriate(class="form-select", required=True) }}
+      <div class="invalid-feedback">Please select an age group.</div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.description.label(class="form-label") }} {{
+      form.description(class="form-control", placeholder="Enter description") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.image_url.label(class="form-label") }} {{
+      form.image_url(class="form-control", placeholder="Enter image URL") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      {{ 'Update' if is_edit else 'Submit' }}
+    </button>
+  </form>
+</div>
+
+<!-- Bootstrap validation JavaScript -->
+<script>
+  (function () {
+    "use strict";
+    const forms = document.querySelectorAll(".needs-validation");
+    Array.from(forms).forEach((form) => {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
+</script>
+
+{% endblock %}
